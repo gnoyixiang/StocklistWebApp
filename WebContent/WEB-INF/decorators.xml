@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+	<decorator name="masterpage" page="masterpage.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+	<decorator name="exceptions" page="">
+		<pattern>/ex-*</pattern>
+	</decorator>
+</decorators>
