@@ -1,5 +1,6 @@
 # StocklistWebApp
-1. create database from sql file: sql > stocklistdb-sql.sql
+1. create database from sql file: sql > stocklistdb-sql.sql 
+(replace existing as transaction auto increment has been removed)
 2. run on tomcat server, url= localhost:8080/StocklistWebApp/user
 3. login to navigate
 
