@@ -28,7 +28,8 @@
 			<th>Colour</th>
 			<th>Unit Price</th>
 		</tr>
-		<%
+		<%-- Try using taglib instead for pagination --%>
+		<%--
 			List<Product> productList = (List<Product>) request.getAttribute("productList");
 			int currentPage = StringUtils.isStrictlyNumeric(request.getParameter("page"))
 					? Integer.parseInt(request.getParameter("page"))
@@ -43,17 +44,32 @@
 				Product p = productList.get(i);
 				pageContext.setAttribute("p", p);
 				pageContext.setAttribute("i", i);
-		%>
-		<tr>
-			<td><a
-				href="${pageContext.request.contextPath}/user/product-detail?index=${i}">${p.partNumber}</a></td>
-			<td><%=p.getDescription()%></td>
-			<td><%=p.getColour()%></td>
-			<td><%=p.getUnitPrice()%></td>
-		</tr>
+		--%>
 		<%
-			}
+			int currentPage = StringUtils.isStrictlyNumeric(request.getParameter("page"))
+					&& !request.getParameter("page").equals("0") ? Integer.parseInt(request.getParameter("page")) : 1;
+			pageContext.setAttribute("currentPage", currentPage);
 		%>
+		<c:forEach var="p" items="${productList}" varStatus="pStatus"
+			begin="${(currentPage - 1)*countPerPage}"
+			end="${productList.size() - 1}">
+			<c:if test="${not(pStatus.count > countPerPage)}">
+
+				<tr>
+					<td><a
+						href="${pageContext.request.contextPath}/user/product-detail?index=${pStatus.index}">${p.partNumber}</a></td>
+					<%-- <td><%=p.getDescription()%></td>
+					<td><%=p.getColour()%></td>
+					<td><%=p.getUnitPrice()%></td> --%>
+					<td>${p.description}</td>
+					<td>${p.colour}</td>
+					<td>${p.unitPrice}</td>
+				</tr>
+			</c:if>
+		</c:forEach>
+		<%--
+			}
+		--%>
 	</table>
 	<div class="pagination pagination-centered">
 		<ul>
@@ -61,30 +77,27 @@
 				<li><a
 					href="${pageContext.request.contextPath}/user/product-catalog?page=${currentPage - 1}">&lt;&lt;</a></li>
 			</c:if>
-			<%
+			<%--
 				int totalPages = (int) request.getAttribute("totalPages");
 				for (int i = 1; i <= totalPages; i++) {
 					if (i > totalPages) {
 						break;
 					}
 					pageContext.setAttribute("i", i);
-			%>
-			<%
+			--%>
+			<%--
 				if (currentPage == i) {
-			%>
-			<li class="active"><a
-				href="${pageContext.request.contextPath}/user/product-catalog?page=${i}">${i}</a></li>
-			<%
-				} else {
-			%>
-			<li><a
-				href="${pageContext.request.contextPath}/user/product-catalog?page=${i}">${i}</a></li>
-			<%
-				}
-			%>
-			<%
-				}
-			%>
+			--%>
+			<c:forEach var="i" begin="1" end="${totalPages}">
+				<c:if test="${currentPage eq i}">
+					<li class="active"><a
+						href="${pageContext.request.contextPath}/user/product-catalog?page=${i}">${i}</a></li>
+				</c:if>
+				<c:if test="${not(currentPage eq i)}">
+					<li><a
+						href="${pageContext.request.contextPath}/user/product-catalog?page=${i}">${i}</a></li>
+				</c:if>
+			</c:forEach>
 			<c:if test="${currentPage < requestScope.totalPages}">
 				<li><a
 					href="${pageContext.request.contextPath}/user/product-catalog?page=${currentPage + 1}">&gt;&gt;</a></li>
