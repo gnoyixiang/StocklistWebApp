@@ -51,6 +51,7 @@
 		%>
 
 	</table>
+	<%--
 	<form action="/user/transaction-view" method="post">
 		<div class="pagination pagination-centered">
 			<ul>
@@ -63,7 +64,7 @@
 				<li><a href="#">&gt;&gt;</a></li>
 			</ul>
 		</div>
-	</form>
+	</form> --%>
 	<script type="text/javascript"> window.onload = createNewMessage(${requestScope.createNewSuccess}); </script>
 </body>
 </html>

@@ -1,7 +1,9 @@
+<%@ page import="com.mysql.jdbc.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*"%>
 <%@ page import="model.Product"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 <title>Product Catalog</title>
 
@@ -28,7 +30,16 @@
 		</tr>
 		<%
 			List<Product> productList = (List<Product>) request.getAttribute("productList");
-			for (int i = 0; i < productList.size(); i++) {
+			int currentPage = StringUtils.isStrictlyNumeric(request.getParameter("page"))
+					? Integer.parseInt(request.getParameter("page"))
+					: 1;
+			pageContext.setAttribute("currentPage", currentPage);
+			int countPerPage = (int) request.getAttribute("countPerPage");
+			int maxPages = (int) request.getAttribute("maxPages");
+			for (int i = (currentPage - 1) * countPerPage; i < productList.size(); i++) {
+				if (i >= currentPage * countPerPage) {
+					break;
+				}
 				Product p = productList.get(i);
 				pageContext.setAttribute("p", p);
 				pageContext.setAttribute("i", i);
@@ -44,19 +55,42 @@
 			}
 		%>
 	</table>
-	<form action="/user/product-catalog" method="post">
-		<div class="pagination pagination-centered">
-			<ul>
-				<li><a href="#">&lt;&lt;</a></li>
-				<li class="active"><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#">&gt;&gt;</a></li>
-			</ul>
-		</div>
-	</form>
+	<div class="pagination pagination-centered">
+		<ul>
+			<c:if test="${currentPage > 1 }">
+				<li><a
+					href="${pageContext.request.contextPath}/user/product-catalog?page=${currentPage - 1}">&lt;&lt;</a></li>
+			</c:if>
+			<%
+				int totalPages = (int) request.getAttribute("totalPages");
+				for (int i = 1; i <= totalPages; i++) {
+					if (i > totalPages) {
+						break;
+					}
+					pageContext.setAttribute("i", i);
+			%>
+			<%
+				if (currentPage == i) {
+			%>
+			<li class="active"><a
+				href="${pageContext.request.contextPath}/user/product-catalog?page=${i}">${i}</a></li>
+			<%
+				} else {
+			%>
+			<li><a
+				href="${pageContext.request.contextPath}/user/product-catalog?page=${i}">${i}</a></li>
+			<%
+				}
+			%>
+			<%
+				}
+			%>
+			<c:if test="${currentPage < requestScope.totalPages}">
+				<li><a
+					href="${pageContext.request.contextPath}/user/product-catalog?page=${currentPage + 1}">&gt;&gt;</a></li>
+			</c:if>
+		</ul>
+	</div>
 	<script type="text/javascript"> window.onload = editMessage(${requestScope.editSuccess}, ${requestScope.partNumber}); </script>
 </body>
 </html>
