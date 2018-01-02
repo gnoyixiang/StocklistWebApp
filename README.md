@@ -6,6 +6,7 @@
 ## Incomplete
 1. Pagination
 2. Reorder report
-3. Manage Customer
-4. Manage User
+3. Manage customer
+4. Manage user
 5. Change password
+6. Register user
