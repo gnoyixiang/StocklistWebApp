@@ -7,6 +7,8 @@
 <title>Error</title>
 </head>
 <body>
-<h1>ERROR!!!</h1>	
+<h1>ERROR!!!</h1>
+<%-- test git --%>
+<a href="${pageContext.request.contextPath}/login">Login here to continue...</a>
 </body>
 </html>
