@@ -3,7 +3,7 @@
 2. run on tomcat server, url= localhost:8080/StocklistWebApp/user
 3. login to navigate
 
-## Uncompleted
+## Incomplete
 1. Pagination
 2. Reorder report
 3. Manage Customer
