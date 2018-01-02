@@ -5,7 +5,7 @@
 3. login to navigate
 
 ## Incomplete
-~~1. Pagination~~
+1. ~~Pagination~~
 2. Reorder report
 3. Manage customer
 4. Manage user
